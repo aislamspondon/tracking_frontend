@@ -10,6 +10,7 @@ import Success from "../ui/Success";
 export default function Home() {
   const trackOrderView = useSelector((state) => state.trackOrderView);
   const { loading, success, trackOrder, isError } = trackOrderView || [];
+  let trackOrders = trackOrder || [];
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchViewTrack);
@@ -18,10 +19,10 @@ export default function Home() {
   if (loading) content = <Loading />;
   if (!loading && isError)
     content = <Error message="There is an error on tracking api" />;
-  if (!loading && !isError && success && trackOrder.length === 0)
+  if (!loading && !isError && success && trackOrders.length === 0)
     content = <Success message="No Data Found! Please Search Again?" />;
-  if (!loading && !isError && success && trackOrder.length > 0) {
-    content = trackOrder?.map((track, index) => (
+  if (!loading && !isError && success && trackOrders.length > 0) {
+    content = trackOrders?.map((track, index) => (
       <OrderList
         key={track._id}
         index={index + 1}
