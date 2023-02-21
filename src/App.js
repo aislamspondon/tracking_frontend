@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import AdminDashBoard from "./components/pages/AdminDashBoard";
+import AdminHome from "./components/pages/AdminHome";
+import Home from "./components/pages/Home";
+import NotFound from "./components/pages/NotFound";
+import Tracking from "./components/pages/Tracking";
+import TrackingDetails from "./components/pages/TrackingDetails";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/tracking" element={<Tracking />} />
+        <Route path="/trackingView/:orderId" element={<TrackingDetails />} />
+        <Route path="/dashboard" element={<AdminDashBoard />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 

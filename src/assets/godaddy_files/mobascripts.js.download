@@ -1,0 +1,51 @@
+function addClass (d, myclass) {
+  if (d) {
+    if (d.className.indexOf(myclass) < 0) {
+      d.className = d.className + myclass;
+    }
+  }
+}
+
+function removeClass (d, myclass) {
+  if (d) {
+    d.className = d.className.replace(myclass,'');
+  }
+}
+
+window.onscroll = function () {
+  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  if (scrollTop > 36) {
+		addClass(document.getElementById('mobastickybtns'),' scrolled');
+	} else {
+		removeClass(document.getElementById('mobastickybtns'),' scrolled');
+	}
+}
+
+function scrollToTop() {
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
+function toggleMobileMenu() {
+  var d1 = document.getElementById('off-canvas-wrap');
+  var d2 = document.getElementById('nav-toggle');
+  if ((d1) && (d2)) {
+    if (d1.className.indexOf('move-right') < 0) {
+      addClass(d1,' move-right');
+      addClass(d2,' active');
+    }
+    else {
+      removeClass(d1,' move-right');
+      removeClass(d2,' active');
+    }
+  }
+}
+
+
+/*
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','js/analytics.js','ga');
+ga('create', 'UA-28025499-1', 'auto');
+ga('send', 'pageview');
+*/
