@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Container, Form, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import fetchListWords from "../../redux/thunk/fetchListWords";
 import BlacklistSingleTable from "../BlacklistSingleTable";
@@ -12,6 +12,7 @@ export default function BlackList() {
   const wordsList = useSelector((state) => state.wordsList);
   const addWords = useSelector((state) => state.addWords);
   const [deleteId, setDeleteId] = useState(0);
+  const [blacklisted, setBlacklisted] = useState("");
   const { success: addWordsSuccess } = addWords || {};
   const { loading, words, success, isError } = wordsList || {};
   useEffect(() => {
@@ -25,11 +26,14 @@ export default function BlackList() {
   if (loading) content = <Loading />;
   if (!loading && isError)
     content = <Error message="There is an error in this table" />;
-  if (!loading && !isError && success && words.length === 0)
+  if (!loading && !isError && success && words?.length === 0)
     content = <Success message="Data Not Found" />;
-  if (!loading && !isError && success && words.length > 0) {
-    let blacklistWords = words.filter((item) => item.id !== deleteId);
-    content = blacklistWords.map((blacklistWord, index) => (
+  if (!loading && !isError && success && words?.length > 0) {
+    let WordsFilter = words?.filter((item) =>
+      item.word.toLowerCase()?.includes(blacklisted?.toLowerCase())
+    );
+    let blacklistWords = WordsFilter?.filter((item) => item.id !== deleteId);
+    content = blacklistWords?.map((blacklistWord, index) => (
       <BlacklistSingleTable
         key={blacklistWord?.id}
         singleBlacklistWord={blacklistWord}
@@ -44,6 +48,18 @@ export default function BlackList() {
       <h1>Blacklist Word</h1>
       <hr />
       <br />
+      <Form style={{ marginBottom: "40px" }}>
+        <Form.Group className="mx-4">
+          <Form.Control
+            type="search"
+            style={{ width: "500px", height: "55px", borderRadius: "12px" }}
+            placeholder="Search Blacklisted Words"
+            value={blacklisted}
+            onChange={(e) => setBlacklisted(e.target.value)}
+            aria-label="Search"
+          ></Form.Control>
+        </Form.Group>
+      </Form>
       <Table striped bordered hover variant="dark">
         <thead>
           <tr>

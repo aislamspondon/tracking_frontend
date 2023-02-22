@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Container, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import usps from "../../assets/USPS.png";
 import fetchTrackingDetails from "../../redux/thunk/fetchTrackingDetails";
 import Result from "../Result";
@@ -41,7 +41,9 @@ export default function TrackingDetails() {
   return (
     <Container>
       <h2 className="text-center">Live Shipment Tracking Details</h2>
-      <Image src={usps} alt="USPS" style={{ width: "300px" }} />
+      <Link to="https://www.usps.com/">
+        <Image src={usps} alt="USPS" style={{ width: "300px" }} />
+      </Link>
       <p>
         <i>
           [This tool displays all shipping updates scanned by USPS using MID
