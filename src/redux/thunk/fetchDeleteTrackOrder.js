@@ -1,9 +1,9 @@
-import axios from "axios";
 import { deleteTrackOrder } from "../trackAPI/actions";
 import {
   DELETE_TRACKING_ORDER_FAIL,
   DELETE_TRACKING_ORDER_REQUEST,
 } from "../trackAPI/actionType";
+import axios from "./utils/axios";
 
 const fetchDeleteTrack = (id) => {
   return async (dispatch, getState) => {

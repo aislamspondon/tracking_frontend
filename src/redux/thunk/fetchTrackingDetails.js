@@ -1,9 +1,9 @@
-import axios from "axios";
 import { apiTrackDetails } from "../trackAPI/actions";
 import {
   TRACKING_API_DETAILS_FAIL,
   TRACKING_API_DETAILS_REQUEST,
 } from "../trackAPI/actionType";
+import axios from "./utils/axios";
 
 const fetchTrackingDetails = (orderId) => {
   return async (dispatch) => {

@@ -1,9 +1,9 @@
-import axios from "axios";
 import { viewrackOrder } from "../trackAPI/actions";
 import {
   VIEW_TRACKING_ORDER_FAIL,
   VIEW_TRACKING_ORDER_REQUEST,
 } from "../trackAPI/actionType";
+import axios from "./utils/axios";
 
 const fetchViewTrack = async (dispatch) => {
   try {

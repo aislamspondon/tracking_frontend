@@ -1,6 +1,6 @@
-import axios from "axios";
 import { login } from "../user/actions";
 import { USER_LOGIN_FAIL, USER_LOGIN_REQUEST } from "../user/actionType";
+import axios from "./utils/axios";
 
 const fetchUserLogin = (email, password) => {
   return async (dispatch) => {

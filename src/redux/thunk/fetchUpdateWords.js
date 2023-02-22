@@ -1,9 +1,9 @@
-import axios from "axios";
 import { updateWords } from "../blackList/actions";
 import {
   UPDATE_BLACKLIST_WORD_FAIL,
   UPDATE_BLACKLIST_WORD_REQUEST,
 } from "../blackList/actionType";
+import axios from "./utils/axios";
 
 const fetchUpdateWords = (id, blacklistWord, replaceBlacklistWord) => {
   return async (dispatch, getState) => {
