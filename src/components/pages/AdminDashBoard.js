@@ -64,7 +64,7 @@ export default function AdminDashBoard() {
     addWordsContent = <Success message="Blacklisted Word Added Successfully" />;
 
   useEffect(() => {
-    if (!userInfo) navigate("/admin");
+    if (!userInfo) navigate("/");
   }, [userInfo, navigate]);
   return (
     <Container>

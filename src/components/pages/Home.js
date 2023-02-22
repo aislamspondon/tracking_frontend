@@ -1,52 +1,55 @@
-import React, { useEffect } from "react";
-import { Container, Table } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import fetchViewTrack from "../../redux/thunk/fetchViewTrackOrder";
-import OrderList from "../OrderList";
-import Error from "../ui/Error";
-import Loading from "../ui/Loading";
-import Success from "../ui/Success";
-// order_number
-export default function Home() {
-  const trackOrderView = useSelector((state) => state.trackOrderView);
-  const { loading, success, trackOrder, isError } = trackOrderView || [];
-  let trackOrders = trackOrder || [];
+import { useNavigate } from "react-router-dom";
+import fetchUserLogin from "../../redux/thunk/fetchLogin";
+export default function AdminHome() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  let navigate = useNavigate();
+  const login = useSelector((state) => state.login);
+  const { userInfo } = login || {};
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(fetchUserLogin(email, password));
+  };
   useEffect(() => {
-    dispatch(fetchViewTrack);
-  }, [dispatch]);
-  let content = null;
-  if (loading) content = <Loading />;
-  if (!loading && isError)
-    content = <Error message="There is an error on tracking api" />;
-  if (!loading && !isError && success && trackOrders.length === 0)
-    content = <Success message="No Data Found! Please Search Again?" />;
-  if (!loading && !isError && success && trackOrders.length > 0) {
-    content = trackOrders?.map((track, index) => (
-      <OrderList
-        key={track._id}
-        index={index + 1}
-        orderNumber={track.order_number}
-      />
-    ));
-  }
+    if (userInfo) {
+      navigate("/dashboard");
+    }
+  }, [navigate, userInfo]);
   return (
     <Container>
-      <h2>Order List </h2>
-      <br />
-      <br />
-      <Table striped bordered hover variant="dark">
-        <thead>
-          <tr style={{ textAlign: "center" }}>
-            <th>ID</th>
-            <th>OrderID</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>{content}</tbody>
-      </Table>
-      <br />
-      <br />
+      <Row className="justify-content-md-center">
+        <Col xs={12} md={6}>
+          <Form onSubmit={submitHandler}>
+            <Form.Group controlId="email">
+              <Form.Label>Username / Email</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Username Or Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <br />
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <br />
+            <Button type="submit" variant="primary">
+              Sign In
+            </Button>
+          </Form>
+        </Col>
+      </Row>
     </Container>
   );
 }
