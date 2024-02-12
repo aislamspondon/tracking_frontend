@@ -15,12 +15,42 @@ export default function TrackingDetails() {
   const trackAPIDetails = useSelector((state) => state.trackAPIDetails);
   const { loading, isError, success, trackingAPI } = trackAPIDetails || {};
   const { estimateDelivery, status } = trackingAPI || {};
-  const date = new Date(estimateDelivery);
+  console.log(estimateDelivery, "This is estimated Delivery")
+
+  let estimateDateStart = ""
+  let estimateDateEnd = ""
+  let deliverymsg
+
+  // Estimate Date Increase Calculate --------------------->
+  if (estimateDelivery !== undefined){
+    let first_level_date = status[0].date
+    console.log(status[0].date, "Status")
+    const orginalestimateDate = new Date(first_level_date)
+    orginalestimateDate.setDate(orginalestimateDate.getDate() + 1)
+    estimateDateStart = orginalestimateDate.toISOString()
+    orginalestimateDate.setDate(orginalestimateDate.getDate() + 2)
+    estimateDateEnd = orginalestimateDate.toISOString()
+    // console.log(estimateDateStart, "Formated Date Start")
+    // console.log(estimateDateEnd, "Formated Date End")
+  }
+
+
+  // ---------------------------------------------------------------
+  // const date = new Date(estimateDelivery);
+  const date_start = new Date(estimateDateStart);
+  const date_end = new Date(estimateDateEnd);
+
   const options = {
     month: "long",
     day: "numeric",
   };
-  const estimateDeliveryDate = date.toLocaleString("en-US", options);
+  // console.log(date)
+  // const estimateDeliveryDate = date.toLocaleString("en-US", options);
+  const estimateDeliveryDateStart = date_start.toLocaleString("en-US", options);
+  const estimateDeliveryDateEnd = date_end.toLocaleString("en-US", options);
+  console.log(estimateDeliveryDateEnd, 'This ')
+  // const estimateDeliveryDateIncrease = date.setDate(estimateDeliveryDate.getDate() + 2)
+  // console.log(estimateDeliveryDateIncrease)
 
   let content = null;
   if (loading) content = <Loading />;
@@ -31,10 +61,19 @@ export default function TrackingDetails() {
   if (!loading && !isError && success && status.length > 0) {
     content = <Result trackingAPI={status} />;
   }
-  let deliverymsg = <p style={{ fontSize: "24px" }}>Delivered</p>;
+  deliverymsg = <p style={{ fontSize: "24px" }}>Delivered</p>;
   if (estimateDelivery !== null)
-    deliverymsg = <p style={{ fontSize: "24px" }}>{estimateDeliveryDate}</p>;
+    // Previous Work --------------
+    // deliverymsg = <p style={{ fontSize: "24px" }}>{estimateDeliveryDate}</p>;
+    deliverymsg = <p style={{ fontSize: "24px" }}>{estimateDeliveryDateStart} - {estimateDeliveryDateEnd}</p>;
 
+    let msg;
+
+    if (estimateDelivery === undefined) {
+      msg = <p style={{fontSize: "24px" }}>Loading ....</p>;
+    }else{
+      msg = deliverymsg
+    }
   useEffect(() => {
     dispatch(fetchTrackingDetails(orderId));
   }, [dispatch, orderId]);
@@ -46,20 +85,17 @@ export default function TrackingDetails() {
       </Link>
       <p>
         <i>
-          [This tool displays all shipping updates scanned by USPS using MID
-          technology. Please do not panic if your shipment does not seem to be
-          making progress. Often USPS will expedite live parcels bypassing the
-          scanning process.]
+          [This tool displays all shipping updates scanned by USPS using MID technology. Please do not panic if your shipments estimated delivery displays a later date than expected OR does not seem to be making progress. USPS expedites live parcels bypassing the scanning process often causing incorrect estimated delivery to display. This is industry wide and not specific to Valley Hatchery.]
         </i>
       </p>
       <br />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", alignItems: 'center' }}>
         <p
           style={{ fontWeight: "bold", fontSize: "24px", marginRight: " 5px" }}
         >
           Estimated Delivery:{" "}
         </p>
-        {deliverymsg}
+        {msg}
       </div>
 
       <br />
